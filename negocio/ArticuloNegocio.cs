@@ -133,6 +133,33 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
+
+        public void agregarConSP(Articulo nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("storedAltaArticulo");
+                datos.setearParametro("@codigo", nuevo.Codigo);
+                datos.setearParametro("@nombre", nuevo.Nombre);
+                datos.setearParametro("@desc", nuevo.Descripcion);
+                datos.setearParametro("@idMarca", nuevo.Marca.Id);
+                datos.setearParametro("@idCategoria", nuevo.Categoria.Id);
+                datos.setearParametro("@img", nuevo.ImagenUrl);
+                datos.setearParametro("@precio", nuevo.precio);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
         public void modificar(Articulo arti)
         {
             AccesoDatos datos = new AccesoDatos();

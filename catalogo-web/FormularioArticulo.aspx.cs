@@ -16,6 +16,7 @@ namespace catalogo_web
             txtId.Enabled = false;
             try
             {
+                //CONFIGURACION INICIAL
                 if (!IsPostBack)
                 {
                     ElectronicaNegocio negocio = new ElectronicaNegocio();
@@ -33,6 +34,31 @@ namespace catalogo_web
                     ddlMarca.DataBind();
 
                 }
+                //CONFIGURACION SI ESTAMOS MODIFICANDO
+                string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
+
+                if (id != "" && !IsPostBack)
+
+                {
+                    ArticuloNegocio negocio = new ArticuloNegocio();
+                    List<Articulo> lista = negocio.listar(id);
+                    Articulo seleccionado = lista[0];
+
+                    //PRECARGAR LOS DATOS
+                    txtId.Text = id;
+                    txtCodigo.Text = seleccionado.Codigo;
+                    txtNombre.Text = seleccionado.Nombre;
+                    txtDescripcion.Text = seleccionado.Descripcion;
+                    txtImagenUrl.Text = seleccionado.ImagenUrl;
+                    txtPrecio.Text = seleccionado.Precio.ToString();
+
+                    ddlMarca.SelectedValue = seleccionado.Marca.Id.ToString();
+                    ddlCategoria.SelectedValue = seleccionado.Categoria.Id.ToString();
+                    txtImagenUrl_TextChanged(sender, e);
+
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -53,14 +79,21 @@ namespace catalogo_web
                 nuevo.Nombre = txtNombre.Text;
                 nuevo.Descripcion = txtDescripcion.Text;
                 nuevo.ImagenUrl = txtImagenUrl.Text;
-                nuevo.precio = decimal.Parse(txtPrecio.Text);
+                nuevo.Precio = decimal.Parse(txtPrecio.Text);
 
                 nuevo.Marca = new Electronica();
                 nuevo.Marca.Id = int.Parse(ddlMarca.SelectedValue);
                 nuevo.Categoria = new Electronica();
                 nuevo.Categoria.Id = int.Parse(ddlCategoria.SelectedValue);
 
-                negocio.agregarConSP(nuevo);
+                if (Request.QueryString["id"] != null)
+                {
+                    nuevo.Id = int.Parse(txtId.Text);
+                    negocio.modificarConSP(nuevo);
+                }                    
+                else
+                    negocio.agregarConSP(nuevo);
+
                 Response.Redirect("ArticulosLista.aspx", false);
 
             }

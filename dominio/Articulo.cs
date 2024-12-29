@@ -22,19 +22,20 @@ namespace dominio
     
         [DisplayName("Imagen Url")]
         public string ImagenUrl { get; set; }
+        public decimal Precio { get; set; }
 
-        private decimal Precio;
-        [DisplayName("Precio_")]
-        public decimal precio
-        {
-            get { return Precio; }
-            set { Precio = value;}
-        }
-        [DisplayName("Precio")]
-        public string precioFormateado
-        {
-            get { return Precio.ToString("C", CultureInfo.CreateSpecificCulture("es-AR")); }
-        }
+        //private decimal Precio;
+        //[DisplayName("Precio_")]
+        //public decimal precio
+        //{
+        //    get { return Precio; }
+        //    set { Precio = value;}
+        //}
+        //[DisplayName("Precio")]
+        //public string precioFormateado
+        //{
+        //    get { return Precio.ToString("C", CultureInfo.CreateSpecificCulture("es-AR")); }
+        //}
 
     }
 

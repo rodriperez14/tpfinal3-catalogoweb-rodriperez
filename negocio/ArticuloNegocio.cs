@@ -11,14 +11,17 @@ namespace negocio
 {
     public class ArticuloNegocio
     {
-        public List<Articulo> listar()
+        public List<Articulo> listar(string id = "")
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setearConsulta("Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca");
+                datos.setearConsulta("Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca ");
+                if (id != "")
+                    datos.setearConsulta("Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca and A.Id = " + id);
+                     
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -44,7 +47,7 @@ namespace negocio
                         aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
 
                     if (!(datos.Lector["Precio"] is DBNull))
-                        aux.precio = (decimal)datos.Lector["Precio"];
+                        aux.Precio = (decimal)datos.Lector["Precio"];
 
                     lista.Add(aux);
                 }
@@ -95,7 +98,7 @@ namespace negocio
                         aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
 
                     if (!(datos.Lector["Precio"] is DBNull))
-                        aux.precio = (decimal)datos.Lector["Precio"];
+                        aux.Precio = (decimal)datos.Lector["Precio"];
 
                     lista.Add(aux);
                 }
@@ -120,7 +123,7 @@ namespace negocio
                 datos.setearParametro("@idMarca", nuevo.Marca.Id);
                 datos.setearParametro("@idCategoria", nuevo.Categoria.Id);
                 datos.setearParametro("@imagenUrl", nuevo.ImagenUrl);
-                datos.setearParametro("@precio", nuevo.precio);
+                datos.setearParametro("@precio", nuevo.Precio);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -147,7 +150,7 @@ namespace negocio
                 datos.setearParametro("@idMarca", nuevo.Marca.Id);
                 datos.setearParametro("@idCategoria", nuevo.Categoria.Id);
                 datos.setearParametro("@img", nuevo.ImagenUrl);
-                datos.setearParametro("@precio", nuevo.precio);
+                datos.setearParametro("@precio", nuevo.Precio);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -172,7 +175,33 @@ namespace negocio
                 datos.setearParametro("@marca",arti.Marca.Id);
                 datos.setearParametro("@categoria",arti.Categoria.Id);
                 datos.setearParametro("@imagen",arti.ImagenUrl);
-                datos.setearParametro("@precio",arti.precio);
+                datos.setearParametro("@precio",arti.Precio);
+                datos.setearParametro("@id", arti.Id);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public void modificarConSP(Articulo arti)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearProcedimiento("storedModificarArticulo");
+                datos.setearParametro("@codigo", arti.Codigo);
+                datos.setearParametro("@nombre", arti.Nombre);
+                datos.setearParametro("@desc", arti.Descripcion);
+                datos.setearParametro("@idMarca", arti.Marca.Id);
+                datos.setearParametro("@idCategoria", arti.Categoria.Id);
+                datos.setearParametro("@img", arti.ImagenUrl);
+                datos.setearParametro("@precio", arti.Precio);
                 datos.setearParametro("@id", arti.Id);
 
                 datos.ejecutarAccion();
@@ -301,7 +330,7 @@ namespace negocio
                         aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
 
                     if (!(datos.Lector["Precio"] is DBNull))
-                        aux.precio = (decimal)datos.Lector["Precio"];
+                        aux.Precio = (decimal)datos.Lector["Precio"];
 
                     lista.Add(aux);
                 }
@@ -313,6 +342,8 @@ namespace negocio
                 throw ex;
             }
         }
+
+       
     }
     
 }

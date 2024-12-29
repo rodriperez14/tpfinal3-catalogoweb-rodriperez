@@ -15,7 +15,7 @@
                         <img src="<%#Eval("ImagenUrl") %>" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title"><%#Eval("Nombre") %></h5>
-                            <p class="card-text"><%#Eval("Descripcion") %></p>
+                            <p class="card-text"><%#Eval("Precio","{0:F2}") %></p>
                             <a href="DetalleArticulo.aspx?id=<%#Eval("Id")%>">Ver detalle</a>
                             <asp:Button Text="Ejemplo" CssClass="btn btn-primary" ID="btnEjemplo" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="ArticuloId" OnClick="btnEjemplo_Click" />
                         </div>

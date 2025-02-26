@@ -26,7 +26,10 @@
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="ArticulosLista.aspx">Lista Articulos</a>
+                             <%if (negocio.Seguridad.sesionActiva(Session["user"]))
+                                 { %>
+                                    <a class="nav-link" href="ArticulosLista.aspx">Lista Articulos</a>
+                            <%} %>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="Favoritos.aspx">Favoritos</a>
@@ -45,9 +48,10 @@
                       else {
                     %>
                             <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-outline-primary me-2" OnClick="btnSalir_Click" runat="server" />
+                            <asp:Label ID="lblUser" Text="user" CssClass="text-light m-auto me-2" runat="server" />
+                                                  
                     <%} %>
-                    <asp:Image ID="imgPerfil" style="height:40px; width:40px; border-radius:50%;"
-                        ImageUrl="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                    <asp:Image ID="imgAvatar" style="height:40px; width:40px; border-radius:50%;"
                         runat="server"/>
                 </div>
             </div>

@@ -14,9 +14,10 @@ namespace catalogo_web
         public bool FiltroAvanzado { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!Seguridad.esAdmin(Session["user"]))
-            {
-                Session.Add("error", "Se requiere permisos de admin para acceder aesta pantalla.");
+            {               
+                Session.Add("error", "Se requiere permisos de admin para acceder a esta pantalla.");
                 Response.Redirect("Error.aspx");
             }
 
@@ -28,6 +29,7 @@ namespace catalogo_web
                 dgvArticulos.DataSource = Session["listaArticulos"];
                 dgvArticulos.DataBind();
             }
+           
         }
 
         protected void dgvArticulos_SelectedIndexChanged(object sender, EventArgs e)

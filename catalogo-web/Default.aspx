@@ -3,9 +3,15 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h1>¡Hola!</h1>
-    <p>Bienvenido a "Gestor de productos Web"</p>
-
+    <%if (!negocio.Seguridad.sesionActiva(Session["user"]))
+        { %>
+            <h1>¡Hola!</h1>
+            <h4>Bienvenido a "Gestor de productos Web"</h4>
+    <%}
+      else {%>
+        <asp:Label Text="Saludo" ID="lblSaludo" Font-Bold="true" Font-Size="35px"  runat="server" />
+        <h4>Bienvenido a "Gestor de productos Web"</h4>
+   <%} %>
     <div class="row row-cols-1 row-cols-md-3 g-4">
 
         <asp:Repeater runat="server" ID="repRepetidor">

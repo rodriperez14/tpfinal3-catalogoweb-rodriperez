@@ -24,13 +24,14 @@ namespace catalogo_web
                 UserNegocio userNegocio = new UserNegocio();
                 EmailService emailService = new EmailService();
                 
+                user.Nombre = txtNombre.Text;
                 user.Email = txtEmail.Text;
                 user.Pass = txtPassword.Text;
                 user.Id = userNegocio.insertarNuevo(user);
                 Session.Add("user", user);  
 
-                //emailService.armarCorreo(user.Email, "Bienvenido/a", "Hola te damos la bienvenida a la aplicacion.");
-                //emailService.enviarEmail();
+                emailService.armarCorreo(user.Email, "Bienvenido/a", "¡Hola! Te damos la bienvenida a nuestra aplicación web para gestionar tus productos.");
+                emailService.enviarEmail();
                 Response.Redirect("Default.aspx", false);
 
             }

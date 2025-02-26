@@ -14,7 +14,7 @@ namespace catalogo_web
         {
 
         }
-
+ 
         protected void Session_Start(object sender, EventArgs e)
         {
 
@@ -32,7 +32,11 @@ namespace catalogo_web
 
         protected void Application_Error(object sender, EventArgs e)
         {
+            Exception exc = Server.GetLastError();
 
+            Session.Add("error", exc.ToString());
+
+            Server.Transfer("Error.aspx");
         }
 
         protected void Session_End(object sender, EventArgs e)

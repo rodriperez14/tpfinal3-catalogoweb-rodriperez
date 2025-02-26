@@ -16,10 +16,10 @@ namespace negocio
         public EmailService()
         {
             server = new SmtpClient();
-            server.Credentials = new NetworkCredential("", "");
+            server.Credentials = new NetworkCredential("rodrigoperez3504@gmail.com", "bnbf dkrq eqfp rimv");
             server.EnableSsl = true;
             server.Port = 587;
-            server.Host = "smtp.gamil.com";
+            server.Host = "smtp.gmail.com";
         }
 
         public void armarCorreo(string emailDestino, string asunto, string cuerpo)
@@ -29,7 +29,7 @@ namespace negocio
             email.To.Add(emailDestino);
             email.Subject = asunto;
             email.IsBodyHtml = true;
-            //email.Body = "<h1>Reporte de materias a las que se a inscripto</h1> <br>Hola, te";
+            //email.Body = "<h1>Reporte de materias a las que se a inscripto</h1> <br>Hola, te inscribiste... bla bla";
             email.Body = cuerpo;
         }
 

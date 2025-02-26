@@ -19,8 +19,23 @@ namespace catalogo_web
 
             if (!IsPostBack)
             {
-                repRepetidor.DataSource = ListaArticulo;
-                repRepetidor.DataBind();
+                if (!Seguridad.sesionActiva(Session["user"]))
+                {
+                    repRepetidor.DataSource = ListaArticulo;
+                    repRepetidor.DataBind();
+                }
+                else
+                {
+                    User user = (User)Session["user"];
+                    if (!string.IsNullOrEmpty(user.Nombre))
+                        lblSaludo.Text = "¡Hola " + user.Nombre + "!";
+                     else
+                        lblSaludo.Text = "¡Hola " + user.Email + "!";
+
+                    repRepetidor.DataSource = ListaArticulo;
+                    repRepetidor.DataBind();
+                }
+               
             }
           
         }

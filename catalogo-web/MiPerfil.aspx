@@ -38,7 +38,7 @@
                     </div>
                     <asp:Image ID="imgNuevoPerfil" ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOwRConBYl2t6L8QMOAQqa5FDmPB_bg7EnGA&s"
                         runat="server" CssClass="img-fluid mb-3" />
-                   <%-- <script>
+                    <script>
                         const fileInput = document.getElementById('<%= txtImagen.ClientID %>');
                         const preview = document.getElementById('<%= imgNuevoPerfil.ClientID %>');
 
@@ -53,7 +53,7 @@
                                 reader.readAsDataURL(file);
                             }
                         });
-                    </script>--%>
+                    </script>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>

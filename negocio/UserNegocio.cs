@@ -38,7 +38,8 @@ namespace negocio
 
             try
             {
-                datos.setearProcedimiento("insertarNuevo");
+                //datos.setearProcedimiento("insertarNuevo");
+                datos.setearConsulta("insert into USERS(nombre, email, pass, admin) output inserted.id values(@nombre, @email, @pass, 0)");
                 datos.setearParametro("@nombre", nuevo.Nombre);
                 datos.setearParametro("@email", nuevo.Email);
                 datos.setearParametro("@pass", nuevo.Pass);

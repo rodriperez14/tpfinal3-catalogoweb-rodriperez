@@ -47,20 +47,19 @@
                     <asp:TextBox runat="server" ID="txtFiltroAvanzado" CssClass="form-control" />
                 </div>
             </div>
-                <div class="col-3" style="display: flex; flex-direction: column; justify-content: flex-end;">
-                    <div class="mb-3">
-                        <asp:Button Text="Buscar" runat="server" CssClass="btn btn-primary" ID="btnBuscar" OnClick="btnBuscar_Click" />
-                    </div>
-                </div>            
+            <div class="col-3" style="display: flex; flex-direction: column; justify-content: flex-end;">
+                <div class="mb-3">
+                    <asp:Button Text="Buscar" runat="server" CssClass="btn btn-primary" ID="btnBuscar" OnClick="btnBuscar_Click" />
+                </div>
+            </div>
         </div>
         <%} %>
     </div>
     <asp:GridView ID="dgvArticulos" runat="server" DataKeyNames="Id"
-        CssClass="table" AutoGenerateColumns="false"
+        CssClass="table table-dark table-bordered" AutoGenerateColumns="false"
         OnSelectedIndexChanged="dgvArticulos_SelectedIndexChanged"
         OnPageIndexChanging="dgvArticulos_PageIndexChanging"
         AllowPaging="true" PageSize="5">
-
         <Columns>
             <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
             <asp:BoundField HeaderText="Marca" DataField="Marca.Descripcion" />
@@ -69,6 +68,10 @@
             <asp:CommandField HeaderText="Accion" ShowSelectButton="true" SelectText="✍️" />
         </Columns>
     </asp:GridView>
-    <a href="FormularioArticulo.aspx" class="btn btn-primary">Agregar</a>
-
+    <%--<a href="FormularioArticulo.aspx" class="btn btn-primary">Agregar articulo</a>--%>
+        <div class="row row-cols-1 row-cols-md-2 g-4 text-center w-100">
+            <div class="col mx-auto">
+                <asp:Button Text="Agregar articulo" ID="btnAgregarArticulo" class="btn btn-primary" runat="server" OnClick="btnAgregarArticulo_Click" />
+            </div>
+        </div>
 </asp:Content>

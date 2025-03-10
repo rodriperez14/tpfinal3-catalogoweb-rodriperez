@@ -40,12 +40,14 @@ namespace catalogo_web
         {
             try
             {
-                Page.Validate();
-                if (!Page.IsValid)
-                    return;
+                if (IsPostBack)
+                {
+                    Page.Validate();
+                    if (!Page.IsValid)
+                        return;
 
-                UserNegocio negocio = new UserNegocio();
-                User user = (User)Session["user"];
+                    UserNegocio negocio = new UserNegocio();
+                    User user = (User)Session["user"];
 
                     if (txtImagen.PostedFile.FileName != "")
                     {
@@ -68,7 +70,10 @@ namespace catalogo_web
                         user.Apellido = txtApellido.Text;
 
                     negocio.actualizar(user);
-                    
+                    //Session.Add("user", user);
+                    Response.Redirect("MiPerfil.aspx", false);
+                }
+
             }
             catch (Exception ex)
             {

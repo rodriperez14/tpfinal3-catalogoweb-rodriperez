@@ -15,7 +15,7 @@ namespace catalogo_web
         protected void Page_Load(object sender, EventArgs e)
         {
             ArticuloNegocio negocio = new ArticuloNegocio();
-            ListaArticulo = negocio.listarConSP();
+            ListaArticulo = negocio.listar2();
 
             if (!IsPostBack)
             {

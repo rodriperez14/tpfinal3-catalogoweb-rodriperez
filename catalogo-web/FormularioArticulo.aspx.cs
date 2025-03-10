@@ -52,14 +52,12 @@ namespace catalogo_web
                     txtNombre.Text = seleccionado.Nombre;
                     txtDescripcion.Text = seleccionado.Descripcion;
                     txtImagenUrl.Text = seleccionado.ImagenUrl;
-                    txtPrecio.Text = seleccionado.Precio.ToString();
+                    txtPrecio.Text = seleccionado.Precio.ToString("F2");
 
                     ddlMarca.SelectedValue = seleccionado.Marca.Id.ToString();
                     ddlCategoria.SelectedValue = seleccionado.Categoria.Id.ToString();
                     txtImagenUrl_TextChanged(sender, e);
-
                 }
-
 
             }
             catch (Exception ex)
@@ -73,6 +71,10 @@ namespace catalogo_web
         {
             try
             {
+                Page.Validate();
+                if (!Page.IsValid)
+                    return;
+
                 Articulo nuevo = new Articulo();
                 ArticuloNegocio negocio = new ArticuloNegocio();
 
@@ -90,10 +92,10 @@ namespace catalogo_web
                 if (Request.QueryString["id"] != null)
                 {
                     nuevo.Id = int.Parse(txtId.Text);
-                    negocio.modificarConSP(nuevo);
+                    negocio.modificar(nuevo);
                 }                    
                 else
-                    negocio.agregarConSP(nuevo);
+                    negocio.agregar(nuevo);
 
                 Response.Redirect("ArticulosLista.aspx", false);
 
@@ -107,7 +109,10 @@ namespace catalogo_web
 
         protected void txtImagenUrl_TextChanged(object sender, EventArgs e)
         {
-            imgArticulo.ImageUrl = txtImagenUrl.Text;
+            if (txtImagenUrl.Text == "")
+                imgArticulo.ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1SUJxGrRAinWDNX-bL1hYT9OSHsaTJZaErw&s";
+            else
+                imgArticulo.ImageUrl = txtImagenUrl.Text;
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
@@ -123,7 +128,7 @@ namespace catalogo_web
                 {
                     ArticuloNegocio negocio = new ArticuloNegocio();
                     negocio.eliminar(int.Parse(txtId.Text));
-                    Response.Redirect("ArticulosLista.aspx");
+                    Response.Redirect("ArticulosLista.aspx", false);
                 }
             }
             catch (Exception ex)

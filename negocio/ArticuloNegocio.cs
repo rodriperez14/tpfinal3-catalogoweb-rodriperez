@@ -66,16 +66,16 @@ namespace negocio
             }
 
         }
-        public List<Articulo> listarConSP()
+        public List<Articulo> listar2()
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                //string consulta = "Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca ";
-                //datos.setearConsulta(consulta);
+                string consulta = "Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca ";
+                datos.setearConsulta(consulta);
 
-                datos.setearProcedimiento("storedListar");
+                //datos.setearProcedimiento("storedListar");
                 datos.ejecutarLectura();
                 while (datos.Lector.Read())
                 {
@@ -137,32 +137,32 @@ namespace negocio
             }
         }
 
-        public void agregarConSP(Articulo nuevo)
-        {
-            AccesoDatos datos = new AccesoDatos();
+        //public void agregarConSP(Articulo nuevo)
+        //{
+        //    AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
-                datos.setearProcedimiento("storedAltaArticulo");
-                datos.setearParametro("@codigo", nuevo.Codigo);
-                datos.setearParametro("@nombre", nuevo.Nombre);
-                datos.setearParametro("@desc", nuevo.Descripcion);
-                datos.setearParametro("@idMarca", nuevo.Marca.Id);
-                datos.setearParametro("@idCategoria", nuevo.Categoria.Id);
-                datos.setearParametro("@img", nuevo.ImagenUrl);
-                datos.setearParametro("@precio", nuevo.Precio);
-                datos.ejecutarAccion();
-            }
-            catch (Exception ex)
-            {
+        //    try
+        //    {
+        //        datos.setearProcedimiento("storedAltaArticulo");
+        //        datos.setearParametro("@codigo", nuevo.Codigo);
+        //        datos.setearParametro("@nombre", nuevo.Nombre);
+        //        datos.setearParametro("@desc", nuevo.Descripcion);
+        //        datos.setearParametro("@idMarca", nuevo.Marca.Id);
+        //        datos.setearParametro("@idCategoria", nuevo.Categoria.Id);
+        //        datos.setearParametro("@img", nuevo.ImagenUrl);
+        //        datos.setearParametro("@precio", nuevo.Precio);
+        //        datos.ejecutarAccion();
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        datos.cerrarConexion();
+        //    }
+        //}
         public void modificar(Articulo arti)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -189,32 +189,32 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
-        public void modificarConSP(Articulo arti)
-        {
-            AccesoDatos datos = new AccesoDatos();
-            try
-            {
-                datos.setearProcedimiento("storedModificarArticulo");
-                datos.setearParametro("@codigo", arti.Codigo);
-                datos.setearParametro("@nombre", arti.Nombre);
-                datos.setearParametro("@desc", arti.Descripcion);
-                datos.setearParametro("@idMarca", arti.Marca.Id);
-                datos.setearParametro("@idCategoria", arti.Categoria.Id);
-                datos.setearParametro("@img", arti.ImagenUrl);
-                datos.setearParametro("@precio", arti.Precio);
-                datos.setearParametro("@id", arti.Id);
+        //public void modificarConSP(Articulo arti)
+        //{
+        //    AccesoDatos datos = new AccesoDatos();
+        //    try
+        //    {
+        //        datos.setearProcedimiento("storedModificarArticulo");
+        //        datos.setearParametro("@codigo", arti.Codigo);
+        //        datos.setearParametro("@nombre", arti.Nombre);
+        //        datos.setearParametro("@desc", arti.Descripcion);
+        //        datos.setearParametro("@idMarca", arti.Marca.Id);
+        //        datos.setearParametro("@idCategoria", arti.Categoria.Id);
+        //        datos.setearParametro("@img", arti.ImagenUrl);
+        //        datos.setearParametro("@precio", arti.Precio);
+        //        datos.setearParametro("@id", arti.Id);
 
-                datos.ejecutarAccion();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
+        //        datos.ejecutarAccion();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        datos.cerrarConexion();
+        //    }
+        //}
         public void eliminar(int id)
         {
             try

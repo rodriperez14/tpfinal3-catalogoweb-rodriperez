@@ -25,25 +25,27 @@ namespace catalogo_web
             if (!IsPostBack)
             {
                 ArticuloNegocio negocio = new ArticuloNegocio();
-                Session.Add("listaArticulos", negocio.listarConSP());
+                Session.Add("listaArticulos", negocio.listar2());
                 dgvArticulos.DataSource = Session["listaArticulos"];
                 dgvArticulos.DataBind();
             }
            
-        }
-
+        }       
         protected void dgvArticulos_SelectedIndexChanged(object sender, EventArgs e)
         {
             string id = dgvArticulos.SelectedDataKey.Value.ToString();
             Response.Redirect("FormularioArticulo.aspx?id=" + id);
         }
-
         protected void dgvArticulos_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
+            if (Session["listaFiltrada"] != null)
+                dgvArticulos.DataSource = Session["listaFiltrada"];
+            else
+                dgvArticulos.DataSource = Session["listaArticulos"];
+
             dgvArticulos.PageIndex = e.NewPageIndex;
             dgvArticulos.DataBind();
         }
-
         protected void filtro_TextChanged(object sender, EventArgs e)
         {
             List<Articulo> lista = (List<Articulo>)Session["listaArticulos"];
@@ -115,6 +117,20 @@ namespace catalogo_web
             {
                 Session.Add("error", ex);
                 throw;
+            }
+        }
+
+        protected void btnAgregarArticulo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("FormularioArticulo.aspx", false);
+
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex.ToString());
+                Response.Redirect("Error.aspx");
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using dominio;
 using accesos;
+using System.Web.UI.WebControls;
 
 namespace negocio
 {
@@ -21,7 +22,7 @@ namespace negocio
                 datos.setearConsulta("Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca ");
                 if (id != "")
                     datos.setearConsulta("Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca and A.Id = " + id);
-                     
+
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -29,9 +30,11 @@ namespace negocio
                     Articulo aux = new Articulo();
                     //Validar los datos que quedaran en Null
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Codigo = (string)datos.Lector["Codigo"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
-                    //aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    if (!(datos.Lector["Codigo"] is DBNull))
+                        aux.Codigo = (string)datos.Lector["Codigo"];
+                    if (!(datos.Lector["Nombre"] is DBNull))
+                        aux.Nombre = (string)datos.Lector["Nombre"];
                     if (!(datos.Lector["Descripcion"] is DBNull))
                         aux.Descripcion = (string)datos.Lector["Descripcion"];
 
@@ -42,8 +45,8 @@ namespace negocio
                     aux.Categoria.Id = (int)datos.Lector["IdCategoria"];
                     aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
 
-                    
-                    if(!(datos.Lector["ImagenUrl"] is DBNull))
+
+                    if (!(datos.Lector["ImagenUrl"] is DBNull))
                         aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
 
                     if (!(datos.Lector["Precio"] is DBNull))
@@ -57,7 +60,6 @@ namespace negocio
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally
@@ -80,11 +82,14 @@ namespace negocio
                 while (datos.Lector.Read())
                 {
                     Articulo aux = new Articulo();
-                    //Cargar los 3 primeros datos para no dejar null
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Codigo = (string)datos.Lector["Codigo"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
-                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    if (!(datos.Lector["Codigo"] is DBNull))
+                        aux.Codigo = (string)datos.Lector["Codigo"];
+                    if (!(datos.Lector["Nombre"] is DBNull))
+                        aux.Nombre = (string)datos.Lector["Nombre"];
+                    if (!(datos.Lector["Descripcion"] is DBNull))
+                        aux.Descripcion = (string)datos.Lector["Descripcion"];
 
                     aux.Marca = new Electronica();
                     aux.Marca.Id = (int)datos.Lector["IdMarca"];
@@ -117,12 +122,12 @@ namespace negocio
             try
             {
                 datos.setearConsulta("Insert into ARTICULOS (Codigo, Nombre, Descripcion,IdMarca, IdCategoria, ImagenUrl, Precio) values (@codigo, @nombre, @descripcion, @idMarca, @IdCategoria, @imagenUrl, @precio)");
-                datos.setearParametro("@codigo", nuevo.Codigo);
-                datos.setearParametro("@nombre", nuevo.Nombre);
-                datos.setearParametro("@descripcion", nuevo.Descripcion);
+                datos.setearParametro("@codigo", nuevo.Codigo != null ? nuevo.Codigo : (object)DBNull.Value);
+                datos.setearParametro("@nombre", nuevo.Nombre != null ? nuevo.Nombre : (object)DBNull.Value);
+                datos.setearParametro("@descripcion", nuevo.Descripcion != null ? nuevo.Descripcion : (object)DBNull.Value);
                 datos.setearParametro("@idMarca", nuevo.Marca.Id);
                 datos.setearParametro("@idCategoria", nuevo.Categoria.Id);
-                datos.setearParametro("@imagenUrl", nuevo.ImagenUrl);
+                datos.setearParametro("@imagenUrl", nuevo.ImagenUrl != null ? nuevo.ImagenUrl : (object)DBNull.Value);
                 datos.setearParametro("@precio", nuevo.Precio);
                 datos.ejecutarAccion();
             }
@@ -169,13 +174,13 @@ namespace negocio
             try
             {
                 datos.setearConsulta("update ARTICULOS set Codigo = @codigo, Nombre = @nombre, Descripcion = @descripcion, IdMarca = @marca, IdCategoria = @categoria, ImagenUrl = @imagen, Precio = @precio Where Id = @id");
-                datos.setearParametro("@codigo",arti.Codigo);
-                datos.setearParametro("@nombre",arti.Nombre);
-                datos.setearParametro("@descripcion",arti.Descripcion);
-                datos.setearParametro("@marca",arti.Marca.Id);
-                datos.setearParametro("@categoria",arti.Categoria.Id);
-                datos.setearParametro("@imagen",arti.ImagenUrl);
-                datos.setearParametro("@precio",arti.Precio);
+                datos.setearParametro("@codigo", arti.Codigo != null ? arti.Codigo : (object)DBNull.Value);
+                datos.setearParametro("@nombre", arti.Nombre != null ? arti.Nombre : (object)DBNull.Value);
+                datos.setearParametro("@descripcion", arti.Descripcion != null ? arti.Descripcion : (object)DBNull.Value);
+                datos.setearParametro("@marca", arti.Marca.Id);
+                datos.setearParametro("@categoria", arti.Categoria.Id);
+                datos.setearParametro("@imagen", arti.ImagenUrl != null ? arti.ImagenUrl : (object)DBNull.Value);
+                datos.setearParametro("@precio", arti.Precio);
                 datos.setearParametro("@id", arti.Id);
 
                 datos.ejecutarAccion();
@@ -221,7 +226,7 @@ namespace negocio
             {
                 AccesoDatos datos = new AccesoDatos();
                 datos.setearConsulta("delete from ARTICULOS where id = @id");
-                datos.setearParametro("@id",id);
+                datos.setearParametro("@id", id);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -233,8 +238,8 @@ namespace negocio
 
         public List<Articulo> filtrar(string campo, string criterio, string filtro)
         {
-            List<Articulo> lista = new List<Articulo> ();
-            AccesoDatos datos = new AccesoDatos ();
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
             try
             {
                 string consulta = "Select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id From ARTICULOS A, CATEGORIAS C, MARCAS M Where C.Id = A.IdCategoria And M.Id = A.IdMarca And ";
@@ -268,11 +273,11 @@ namespace negocio
                                 break;
                         }
                         break;
-                    case "Marca":                 
+                    case "Marca":
                         switch (criterio)
                         {
                             case "Samsung":
-                                consulta += "M.Descripcion like 'Samsung'";                  
+                                consulta += "M.Descripcion like 'Samsung'";
                                 break;
                             case "Apple":
                                 consulta += "M.Descripcion like 'Apple'";
@@ -299,9 +304,9 @@ namespace negocio
                                 break;
                             case "Media":
                                 consulta += "C.Descripcion like 'Media'";
-                                break;                           
+                                break;
                             default:
-                                consulta += "M.Descripcion like 'Audio'";
+                                consulta += "C.Descripcion like 'Audio'";
                                 break;
                         }
                         break;
@@ -312,11 +317,14 @@ namespace negocio
                 while (datos.Lector.Read())
                 {
                     Articulo aux = new Articulo();
-                    //Cargar los 3 primeros datos para no dejar null
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Codigo = (string)datos.Lector["Codigo"];
+                    if (!(datos.Lector["Codigo"] is DBNull))
+                        aux.Codigo = (string)datos.Lector["Codigo"];
+
                     aux.Nombre = (string)datos.Lector["Nombre"];
-                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    if (!(datos.Lector["Descripcion"] is DBNull))
+                        aux.Descripcion = (string)datos.Lector["Descripcion"];
 
                     aux.Marca = new Electronica();
                     aux.Marca.Id = (int)datos.Lector["IdMarca"];
@@ -343,7 +351,45 @@ namespace negocio
             }
         }
 
-       
+        public void agregarMarca(string marca)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("insert into MARCAS values (@marca)");
+                datos.setearParametro("@marca", marca);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public void agregarCategoria(string categoria)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("insert into CATEGORIAS values (@categoria)");
+                datos.setearParametro("@categoria", categoria);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
-    
+
 }

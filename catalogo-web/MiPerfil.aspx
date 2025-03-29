@@ -7,6 +7,12 @@
             color: red;
             font-size: 12px;
         }
+
+        .centered-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 
 </asp:Content>
@@ -19,14 +25,20 @@
                 <label class="form-label">Email</label>
                 <asp:TextBox runat="server" CssClass="form-control" ID="txtEmail" />
                 <asp:RequiredFieldValidator CssClass="validacion" ErrorMessage="El email es requerido." ControlToValidate="txtEmail" runat="server" />
+                <asp:RegularExpressionValidator CssClass="validacion" ErrorMessage="Solo formato email" ControlToValidate="txtEmail" 
+                    ValidationExpression="^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$" runat="server" />
             </div>
             <div class="mb-3">
                 <label class="form-label">Nombre</label>
-                <asp:TextBox runat="server" CssClass="form-control" ID="txtNombre" />
+                <asp:TextBox runat="server" CssClass="form-control" ID="txtNombre" />                
+                <asp:RegularExpressionValidator CssClass="validacion" ErrorMessage="Solo formato letras" ControlToValidate="txtNombre" 
+                   ValidationExpression="^[a-zA-Z]+$" runat="server" />
             </div>
             <div class="mb-3">
                 <label class="form-label">Apellido</label>
                 <asp:TextBox runat="server" CssClass="form-control" ID="txtApellido" />
+                <asp:RegularExpressionValidator CssClass="validacion" ErrorMessage="Solo formato letras" ControlToValidate="txtApellido"
+                   ValidationExpression="^[a-zA-Z]+$" runat="server" />
             </div>
         </div>
         <div class="col-md-4">
@@ -36,8 +48,8 @@
                         <label class="form-label">Imagen Perfil</label>
                         <input type="file" id="txtImagen" runat="server" class="form-control" />
                     </div>
-                    <asp:Image ID="imgNuevoPerfil" ImageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOwRConBYl2t6L8QMOAQqa5FDmPB_bg7EnGA&s"
-                        runat="server" CssClass="img-fluid mb-3" />
+                    <asp:Image ID="imgNuevoPerfil" ImageUrl="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                        runat="server" CssClass="centered-image" Width="75%" />
                     <script>
                         const fileInput = document.getElementById('<%= txtImagen.ClientID %>');
                         const preview = document.getElementById('<%= imgNuevoPerfil.ClientID %>');
@@ -62,7 +74,7 @@
     <div class="row">
         <div class="col-md-4">
             <asp:Button Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" ID="btnGuardar" runat="server" />
-            <a href="/">Regresar</a>
+            <a href="/" class="btn btn-secondary">Cancelar</a>
         </div>
     </div>
 </asp:Content>

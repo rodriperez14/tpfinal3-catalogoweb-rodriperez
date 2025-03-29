@@ -16,7 +16,7 @@ namespace catalogo_web
         {
 
             if (!Seguridad.esAdmin(Session["user"]))
-            {               
+            {
                 Session.Add("error", "Se requiere permisos de admin para acceder a esta pantalla.");
                 Response.Redirect("Error.aspx");
             }
@@ -29,8 +29,8 @@ namespace catalogo_web
                 dgvArticulos.DataSource = Session["listaArticulos"];
                 dgvArticulos.DataBind();
             }
-           
-        }       
+
+        }
         protected void dgvArticulos_SelectedIndexChanged(object sender, EventArgs e)
         {
             string id = dgvArticulos.SelectedDataKey.Value.ToString();
@@ -62,11 +62,11 @@ namespace catalogo_web
 
         protected void ddlCampo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ddlCriterio.Items.Clear();          
+            ddlCriterio.Items.Clear();
 
             if (ddlCampo.SelectedItem.ToString() == "Nombre")
             {
-                
+                txtFiltroAvanzado.Enabled = true;
                 ddlCriterio.Items.Add("Comienza con");
                 ddlCriterio.Items.Add("Termina con");
                 ddlCriterio.Items.Add("Contiene");
@@ -74,7 +74,7 @@ namespace catalogo_web
             }
             else if (ddlCampo.SelectedItem.ToString() == "Precio")
             {
-                
+                txtFiltroAvanzado.Enabled = true;
                 ddlCriterio.Items.Add("Mayor a");
                 ddlCriterio.Items.Add("Menor a");
                 ddlCriterio.Items.Add("Igual a");
@@ -106,12 +106,54 @@ namespace catalogo_web
         {
             try
             {
-                ArticuloNegocio negocio = new ArticuloNegocio();
-                dgvArticulos.DataSource = negocio.filtrar(ddlCampo.SelectedItem.ToString(),
-                    ddlCriterio.SelectedItem.ToString(),
-                    txtFiltroAvanzado.Text);
-                dgvArticulos.DataBind();
+                string opcionSeleccionada = ddlCampo.SelectedValue;
+                string inputUsuario = txtFiltroAvanzado.Text;
 
+                if (!txtFiltroAvanzado.Enabled)
+                {
+                    ArticuloNegocio negocio = new ArticuloNegocio();
+                    dgvArticulos.DataSource = negocio.filtrar(ddlCampo.SelectedItem.ToString(),
+                        ddlCriterio.SelectedItem.ToString(),
+                        txtFiltroAvanzado.Text);
+                    dgvArticulos.DataBind();
+                }
+
+                if (opcionSeleccionada == "Nombre")
+                {
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(inputUsuario, @"^[a-zA-Z]+$"))
+                    {
+                        lblMensajeError.Visible = true;
+                        lblMensajeError.Text = "Ingrese solo letras.";
+                    }
+                    else
+                    {
+                        lblMensajeError.Visible = false;
+                        ArticuloNegocio negocio = new ArticuloNegocio();
+                        dgvArticulos.DataSource = negocio.filtrar(ddlCampo.SelectedItem.ToString(),
+                            ddlCriterio.SelectedItem.ToString(),
+                            txtFiltroAvanzado.Text);
+                        dgvArticulos.DataBind();
+                    }
+                    
+                }
+                else if (opcionSeleccionada == "Precio")
+                {
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(inputUsuario, @"^[0-9]+$"))
+                    {
+                        lblMensajeError.Visible = true;
+                        lblMensajeError.Text = "Ingrese solo números.";
+                    }
+                    else
+                    {
+                        lblMensajeError.Visible = false;
+                        ArticuloNegocio negocio = new ArticuloNegocio();
+                        dgvArticulos.DataSource = negocio.filtrar(ddlCampo.SelectedItem.ToString(),
+                            ddlCriterio.SelectedItem.ToString(),
+                            txtFiltroAvanzado.Text);
+                        dgvArticulos.DataBind();
+                    }
+                }
+                               
             }
             catch (Exception ex)
             {

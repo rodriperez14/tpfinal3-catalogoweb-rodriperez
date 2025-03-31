@@ -8,6 +8,7 @@ using dominio;
 using accesos;
 using System.Web.UI.WebControls;
 
+
 namespace negocio
 {
     public class ArticuloNegocio

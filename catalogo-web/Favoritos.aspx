@@ -11,11 +11,14 @@
                     <div class="card mb-3 h-100">
                         <img src="<%# string.IsNullOrEmpty((string)Eval("ImagenUrl")) || !Eval("ImagenUrl").ToString().Contains("http") ? "https://procircuit.cl/cdn/shop/files/Producto_sin_foto_73f4f3b6-767d-47b0-a47e-6c39e976dd26.png?v=1713311694" : Eval("ImagenUrl") %>" class="card-img-top img-fluid" alt="<%#Eval("Nombre") %>">
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">Nombre: <%#Eval("Nombre") %></h5>                          
+                            <h5 class="card-title">Nombre: <%#Eval("Nombre") %></h5>
                             <p class="card-text">Descripcion: <%#Eval("Descripcion") %></p>
                             <p class="card-text">Marca: <%#Eval("Marca.Descripcion") %></p>
                             <p class="card-text">Categoria: <%#Eval("Categoria.Descripcion") %></p>
                             <p class="card-text">Precio: $<%#Eval("Precio","{0:F2}") %></p>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <asp:Button Text="Eliminar de favoritos" ID="btnEliminarFavorito" CssClass="btn btn-outline-danger" CommandArgument='<%#Eval ("Id")%>' CommandName="IdEliminarFav" OnClick="btnEliminarFavorito_Click" runat="server" />
                         </div>
                     </div>
                 </div>

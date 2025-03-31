@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using negocio;
 using dominio;
+using System.Collections;
 
 namespace catalogo_web
 {
@@ -28,7 +29,7 @@ namespace catalogo_web
                 }
                 else
                 {
-           
+
                     User user = (User)Session["user"];
                     if (!string.IsNullOrEmpty(user.Nombre))
                         lblSaludo.Text = "¡Hola " + user.Nombre + "!";
@@ -37,6 +38,7 @@ namespace catalogo_web
 
                     repRepetidor.DataSource = ListaArticulo;
                     repRepetidor.DataBind();
+
                 }
 
             }
